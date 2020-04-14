@@ -18,16 +18,17 @@ npm install webtorrent
 ```js
 var client = new WebTorrent()
 
-var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+var torrentId =
+	"magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
 
 client.add(torrentId, function (torrent) {
-  // Torrents can contain many files. Let's use the .mp4 file
-  var file = torrent.files.find(function (file) {
-    return file.name.endsWith('.mp4')
-  })
+	// Torrents can contain many files. Let's use the .mp4 file
+	var file = torrent.files.find(function (file) {
+		return file.name.endsWith(".mp4")
+	})
 
-  // Display the file by adding it to the DOM. Supports video, audio, image, etc. files
-  file.appendTo('body')
+	// Display the file by adding it to the DOM. Supports video, audio, image, etc. files
+	file.appendTo("body")
 })
 ```
 
@@ -39,9 +40,9 @@ Is WebRTC natively supported in the environment?
 
 ```js
 if (WebTorrent.WEBRTC_SUPPORT) {
-  // WebRTC is supported
+	// WebRTC is supported
 } else {
-  // Use a fallback
+	// Use a fallback
 }
 ```
 
@@ -58,7 +59,9 @@ If `opts` is specified, then the default options (shown below) will be overridde
   peerId: String|Buffer,   // Wire protocol peer ID (default=randomly generated)
   tracker: Boolean|Object, // Enable trackers (default=true), or options object for Tracker
   dht: Boolean|Object,     // Enable DHT (default=true), or options object for DHT
-  webSeeds: Boolean        // Enable BEP19 web seeds (default=true)
+  webSeeds: Boolean,       // Enable BEP19 web seeds (default=true)
+  downloadLimit: Number,   // Download speed limit in bytes (default=Number.MAX_VALUE) - e.g. (200*1024) is 200kB or 1.6mbps
+  uploadLimit: Number,     // Upload speed limit in bytes (default=Number.MAX_VALUE)
 }
 ```
 
@@ -79,7 +82,7 @@ Start downloading a new torrent.
 - info hash (hex string or buffer)
 - parsed torrent (from [parse-torrent](https://github.com/webtorrent/parse-torrent))
 - http/https url to a torrent file (string)
-- filesystem path to a torrent file (string) *(Node.js only)*
+- filesystem path to a torrent file (string) _(Node.js only)_
 
 If `opts` is specified, then the default options (shown below) will be overridden.
 
@@ -104,9 +107,9 @@ just want the file data, then use `ontorrent` or the 'torrent' event.
 If you provide `opts.store`, it will be called as
 `opts.store(chunkLength, storeOpts)` with:
 
-* `storeOpts.length` - size of all the files in the torrent
-* `storeOpts.files` - an array of torrent file objects
-* `storeOpts.torrent` - the torrent instance being stored
+- `storeOpts.length` - size of all the files in the torrent
+- `storeOpts.files` - an array of torrent file objects
+- `storeOpts.torrent` - the torrent instance being stored
 
 ## `client.seed(input, [opts], [function onseed (torrent) {}])`
 
@@ -115,9 +118,9 @@ Start seeding a new torrent.
 `input` can be any of the following:
 
 - filesystem path to file or folder
- (string) *(Node.js only)*
-- W3C [File](https://developer.mozilla.org/en-US/docs/Web/API/File) object (from an `<input>` or drag and drop) *(browser only)*
-- W3C [FileList](https://developer.mozilla.org/en-US/docs/Web/API/FileList) object (basically an array of `File` objects) *(browser only)*
+  (string) _(Node.js only)_
+- W3C [File](https://developer.mozilla.org/en-US/docs/Web/API/File) object (from an `<input>` or drag and drop) _(browser only)_
+- W3C [FileList](https://developer.mozilla.org/en-US/docs/Web/API/FileList) object (basically an array of `File` objects) _(browser only)_
 - Node [Buffer](https://nodejs.org/api/buffer.html) object
 - Node [Readable stream](https://nodejs.org/api/stream.html#stream_class_stream_readable) object
 
@@ -145,8 +148,8 @@ the name is included in the object. For Buffer or Readable stream types, a `name
 can be set on the object, like this:
 
 ```js
-var buf = new Buffer('Some file content')
-buf.name = 'Some file name'
+var buf = new Buffer("Some file content")
+buf.name = "Some file name"
 client.seed(buf, cb)
 ```
 
@@ -167,7 +170,7 @@ Always listen for the 'error' event.
 Remove a torrent from the client. Destroy all connections to peers and delete all saved
 file data. If `callback` is specified, it will be called when file data is removed.
 
-*Note: This method does not currently delete torrent data (in e.g. `/tmp/webtorrent/...`, see the `path` option to `client.add`). Until this is fixed, please implement it yourself (consider using the `rimraf` npm package).
+\*Note: This method does not currently delete torrent data (in e.g. `/tmp/webtorrent/...`, see the `path` option to `client.add`). Until this is fixed, please implement it yourself (consider using the `rimraf` npm package).
 
 ## `client.destroy([function callback (err) {}])`
 
@@ -198,7 +201,6 @@ Total download progress for all **active** torrents, from 0 to 1.
 
 Aggregate "seed ratio" for all torrents (uploaded / downloaded).
 
-
 # Torrent API
 
 ## `torrent.name`
@@ -217,7 +219,7 @@ Magnet URI of the torrent (string).
 
 `.torrent` file of the torrent (Buffer).
 
-## `torrent.torrentFileBlobURL` *(browser only)*
+## `torrent.torrentFileBlobURL` _(browser only)_
 
 `.torrent` file of the torrent (Blob URL).
 
@@ -249,11 +251,11 @@ Time remaining for download to complete (in milliseconds).
 
 ## `torrent.received`
 
-Total bytes received from peers (*including* invalid data).
+Total bytes received from peers (_including_ invalid data).
 
 ## `torrent.downloaded`
 
-Total *verified* bytes received from peers.
+Total _verified_ bytes received from peers.
 
 ## `torrent.uploaded`
 
@@ -382,8 +384,8 @@ Returns an `http.Server` instance (got from calling `http.createServer`). If
 
 ```js
 {
-  origin: String // Allow requests from specific origin. `false` for same-origin. [default: '*']
-  hostname: String // If specified, only allow requests whose `Host` header matches this hostname. Note that you should not specify the port since this is automatically determined by the server. Ex: `localhost` [default: `undefined`]
+	origin: String // Allow requests from specific origin. `false` for same-origin. [default: '*']
+	hostname: String // If specified, only allow requests whose `Host` header matches this hostname. Note that you should not specify the port since this is automatically determined by the server. Ex: `localhost` [default: `undefined`]
 }
 ```
 
@@ -395,21 +397,21 @@ Here is a usage example:
 
 ```js
 var client = new WebTorrent()
-var magnetURI = 'magnet: ...'
+var magnetURI = "magnet: ..."
 
 client.add(magnetURI, function (torrent) {
-  // create HTTP server for this torrent
-  var server = torrent.createServer()
-  server.listen(port) // start the server listening to a port
+	// create HTTP server for this torrent
+	var server = torrent.createServer()
+	server.listen(port) // start the server listening to a port
 
-  // visit http://localhost:<port>/ to see a list of files
+	// visit http://localhost:<port>/ to see a list of files
 
-  // access individual files at http://localhost:<port>/<index> where index is the index
-  // in the torrent.files array
+	// access individual files at http://localhost:<port>/<index> where index is the index
+	// in the torrent.files array
 
-  // later, cleanup...
-  server.close()
-  client.destroy()
+	// later, cleanup...
+	server.close()
+	client.destroy()
 })
 ```
 
@@ -470,11 +472,11 @@ Emitted when all the torrent files have been downloaded.
 Here is a usage example:
 
 ```js
-torrent.on('done', function(){
-  console.log('torrent finished downloading')
-  torrent.files.forEach(function(file){
-     // do something with file
-  })
+torrent.on("done", function () {
+	console.log("torrent finished downloading")
+	torrent.files.forEach(function (file) {
+		// do something with file
+	})
 })
 ```
 
@@ -484,11 +486,11 @@ Emitted whenever data is downloaded. Useful for reporting the current torrent st
 instance:
 
 ```js
-torrent.on('download', function (bytes) {
-  console.log('just downloaded: ' + bytes)
-  console.log('total downloaded: ' + torrent.downloaded)
-  console.log('download speed: ' + torrent.downloadSpeed)
-  console.log('progress: ' + torrent.progress)
+torrent.on("download", function (bytes) {
+	console.log("just downloaded: " + bytes)
+	console.log("total downloaded: " + torrent.downloaded)
+	console.log("download speed: " + torrent.downloadSpeed)
+	console.log("progress: " + torrent.progress)
 })
 ```
 
@@ -506,11 +508,11 @@ node.js-style duplex stream to the remote peer. This event can be used to specif
 Here is a usage example:
 
 ```js
-var MyExtension = require('./my-extension')
+var MyExtension = require("./my-extension")
 
-torrent1.on('wire', function (wire, addr) {
-  console.log('connected to peer with address ' + addr)
-  wire.use(MyExtension)
+torrent1.on("wire", function (wire, addr) {
+	console.log("connected to peer with address " + addr)
+	wire.use(MyExtension)
 })
 ```
 
@@ -520,25 +522,25 @@ information on how to define a protocol extension.
 
 ## `torrent.on('noPeers', function (announceType) {})`
 
-Emitted whenever a DHT or tracker announce occurs, but no peers have been found.  `announceType` is either `'tracker'` or `'dht'` depending on which announce occurred to trigger this event.  Note that if you're attempting to discover peers from both a tracker and a DHT, you'll see this event separately for each.
+Emitted whenever a DHT or tracker announce occurs, but no peers have been found. `announceType` is either `'tracker'` or `'dht'` depending on which announce occurred to trigger this event. Note that if you're attempting to discover peers from both a tracker and a DHT, you'll see this event separately for each.
 
 # File API
 
 ## `file.name`
 
-File name, as specified by the torrent. *Example: 'some-filename.txt'*
+File name, as specified by the torrent. _Example: 'some-filename.txt'_
 
 ## `file.path`
 
-File path, as specified by the torrent. *Example: 'some-folder/some-filename.txt'*
+File path, as specified by the torrent. _Example: 'some-folder/some-filename.txt'_
 
 ## `file.length`
 
-File length (in bytes), as specified by the torrent. *Example: 12345*
+File length (in bytes), as specified by the torrent. _Example: 12345_
 
 ## `file.downloaded`
 
-Total *verified* bytes received from peers, for this file.
+Total _verified_ bytes received from peers, for this file.
 
 ## `file.progress`
 
@@ -554,7 +556,7 @@ Useful if you know you need the file at a later stage.
 Deselects the file, which means it won't be downloaded unless someone creates a stream
 for it.
 
-*Note: This method is currently not working as expected, see [dcposch answer on #164](https://github.com/webtorrent/webtorrent/issues/164) for a nice work around solution.
+\*Note: This method is currently not working as expected, see [dcposch answer on #164](https://github.com/webtorrent/webtorrent/issues/164) for a nice work around solution.
 
 ## `stream = file.createReadStream([opts])`
 
@@ -583,12 +585,12 @@ called once the file is ready. `callback` must be specified, and will be called 
 
 ```js
 file.getBuffer(function (err, buffer) {
-  if (err) throw err
-  console.log(buffer) // <Buffer 00 98 00 01 ...>
+	if (err) throw err
+	console.log(buffer) // <Buffer 00 98 00 01 ...>
 })
 ```
 
-## `file.appendTo(rootElem, [opts], [function callback (err, elem) {}])` *(browser only)*
+## `file.appendTo(rootElem, [opts], [function callback (err, elem) {}])` _(browser only)_
 
 Show the file in a the browser by appending it to the DOM. This is a powerful function
 that handles many file types like video (.mp4, .webm, .m4v, etc.), audio (.m4a, .mp3,
@@ -622,9 +624,9 @@ If provided, `callback` will be called once the file is visible to the user.
 displaying the content.
 
 ```js
-file.appendTo('#containerElement', function (err, elem) {
-  if (err) throw err // file failed to download or display in the DOM
-  console.log('New DOM node with the content', elem)
+file.appendTo("#containerElement", function (err, elem) {
+	if (err) throw err // file failed to download or display in the DOM
+	console.log("New DOM node with the content", elem)
 })
 ```
 
@@ -655,13 +657,13 @@ For other media formats, like images, the file is just added to the DOM.
 For text-based formats, like html files, pdfs, etc., the file is added to the DOM
 via a sandboxed `<iframe>` tag.
 
-## `file.renderTo(elem, [opts], [function callback (err, elem) {}])` *(browser only)*
+## `file.renderTo(elem, [opts], [function callback (err, elem) {}])` _(browser only)_
 
 Like `file.appendTo` but renders directly into given element (or CSS selector). For
 example, to render a video, provide a `<video>` element like
 `file.renderTo('video#player')`.
 
-## `file.getBlob(function callback (err, blob) {})` *(browser only)*
+## `file.getBlob(function callback (err, blob) {})` _(browser only)_
 
 Get a W3C `Blob` object which contains the file data.
 
@@ -669,7 +671,7 @@ The file will be fetched from the network with highest priority, and `callback` 
 called once the file is ready. `callback` must be specified, and will be called with a an
 `Error` (or `null`) and the `Blob` object.
 
-## `file.getBlobURL(function callback (err, url) {})` *(browser only)*
+## `file.getBlobURL(function callback (err, url) {})` _(browser only)_
 
 Get a url which can be used in the browser to refer to the file.
 
@@ -681,12 +683,12 @@ This method is useful for creating a file download link, like this:
 
 ```js
 file.getBlobURL(function (err, url) {
-  if (err) throw err
-  var a = document.createElement('a')
-  a.download = file.name
-  a.href = url
-  a.textContent = 'Download ' + file.name
-  document.body.appendChild(a)
+	if (err) throw err
+	var a = document.createElement("a")
+	a.download = file.name
+	a.href = url
+	a.textContent = "Download " + file.name
+	document.body.appendChild(a)
 })
 ```
 
@@ -694,8 +696,8 @@ file.getBlobURL(function (err, url) {
 
 ## `piece.length`
 
-Piece length (in bytes). *Example: 12345*
+Piece length (in bytes). _Example: 12345_
 
 ## `piece.missing`
 
-Piece missing length (in bytes). *Example: 100*
+Piece missing length (in bytes). _Example: 100_
